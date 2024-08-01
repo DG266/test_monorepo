@@ -1,0 +1,37 @@
+name: SonarCloud Monorepo Scan
+on:
+  push:
+      branches:
+      - main
+      paths:
+      - 'lambdas/test/**'
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  sonarcloudScan1:
+    name: SonarCloudScanServer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_SERVER_TOKEN }}
+        with:
+          projectBaseDir: refair-server/
+          
+  sonarcloudScan2:
+    name: SonarCloudScanClient
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_CLIENT_TOKEN }}
+        with:
+          projectBaseDir: refair-client/
