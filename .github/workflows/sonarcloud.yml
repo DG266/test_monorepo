@@ -17,8 +17,23 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: "3.10"
-      - name: Print working directory
-        run: pwd
+      - name: Install Kaggle
+        run: pip install kaggle
+      - name: Configure Kaggle credentials
+        run: |
+          mkdir .kaggle
+          echo '{"username":"${{ secrets.KAGGLE_USERNAME }}","key":"${{ secrets.KAGGLE_KEY }}"}' > ~/.kaggle/kaggle.json
+          chmod 600 .kaggle/kaggle.json
+        working-directory: ./refair-server
+      - name: Download glove.6B.100d.txt from Kaggle
+        run: kaggle datasets download -d danielwillgeorge/glove6b100dtxt -p ./downloads
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        working-directory: ./refair-server
+      - name: Unzip downloaded file
+        run: unzip ./downloads/glove6b100dtxt.zip -d ./models
+        working-directory: ./refair-server
       - name: Install tox and any other packages
         working-directory: ./refair-server
         run: pip install tox
