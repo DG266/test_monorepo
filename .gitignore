@@ -7,3 +7,4 @@ notebooks/domain_classification/.venv
 notebooks/ml_task_detection/.venv
 refair-server/__pycache__/
 refair-server/env/
+refair-server/tests/__pycache__
