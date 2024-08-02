@@ -19,12 +19,6 @@ jobs:
           python-version: "3.10"
       - name: Install Kaggle
         run: pip install kaggle
-      - name: Configure Kaggle credentials
-        run: |
-          mkdir .kaggle
-          echo '{"username":"${{ secrets.KAGGLE_USERNAME }}","key":"${{ secrets.KAGGLE_KEY }}"}' > .kaggle/kaggle.json
-          chmod 600 .kaggle/kaggle.json
-        working-directory: ./refair-server
       - name: Download glove.6B.100d.txt from Kaggle
         run: kaggle datasets download -d danielwillgeorge/glove6b100dtxt -p ./downloads
         env:
